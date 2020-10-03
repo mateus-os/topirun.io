@@ -49,7 +49,7 @@ public class AccountValidator {
 
     public List<Account> validateShippingPostalCode(List<Account> accounts) {
         for (Account account : accounts) {
-            if(account.ShippingPostalCode.length() == 0){
+            if(account.ShippingPostalCode == null){
                 continue;
             }
 
