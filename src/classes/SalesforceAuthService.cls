@@ -23,6 +23,7 @@ public class SalesforceAuthService {
         HttpRequest request = new HttpRequest();
         request.setEndpoint(ENDPOINT_URL);
         request.setMethod('POST');
+        request.setHeader('Content-Type', 'application/x-www-form-urlencoded');
 
         request.setBody ( buildPostFormParameters (oauthRequest) );
 
