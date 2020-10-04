@@ -23,4 +23,11 @@ public virtual class AccountRepository {
         FROM Account
         WHERE Id in :ids];
     }
+
+    virtual
+    public List<Account> findByGeolocationRequested() {
+        return [SELECT Id
+        FROM Account
+        WHERE GeolocationRequested__c = true];
+    }
 }

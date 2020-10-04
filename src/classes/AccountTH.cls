@@ -40,6 +40,8 @@ public virtual class AccountTH extends TriggerHandler {
         List<Account> filteredChangedCnpj = this.filter.filterByChangedCnpj(newAccounts, oldAccounts);
         List<Account> filteredChangedCpf = this.filter.filterByChangedCpf(newAccounts, oldAccounts);
 
+        if(filteredChangedCnpj.isEmpty() && filteredChangedCpf.isEmpty()) return;
+
         this.validator.validateCnpj(filteredChangedCnpj);
         this.validator.validateCpf(filteredChangedCpf);
     }
@@ -47,6 +49,8 @@ public virtual class AccountTH extends TriggerHandler {
     virtual
     public void validatePostalCode() {
         List<Account> filteredAccounts = filter.filterByChangedPostalCode(newAccounts, oldAccounts);
+
+        if(filteredAccounts.isEmpty()) return;
 
         this.validator.validateBillingPostalCode(filteredAccounts);
         this.validator.validateShippingPostalCode(filteredAccounts);

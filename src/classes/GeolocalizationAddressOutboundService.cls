@@ -19,8 +19,10 @@ public class GeolocalizationAddressOutboundService {
             List<GeolocalizationAddressErrorResponse> errors = (List<GeolocalizationAddressErrorResponse>)
                                 JSON.deserializeStrict(response.getBody(), List<GeolocalizationAddressErrorResponse>.class);
             account.GeolocationErrorMessage__c = errors[0].message;
+            Account.GeolocationRequested__c = false;
             return account;
         }
+        account.GeolocationErrorMessage__c = '';
         Account.GeolocationRequested__c = true;
         return account;
     }

@@ -1,13 +1,7 @@
 /**
  * @author mateus-os
  */
-public with sharing class SendGeolocalizationAddress {
-
-    List<Account> accounts;
-
-    public SendGeolocalizationAddress (List<Account> accounts) {
-        this.accounts = accounts;
-    }
+public class SendGeolocalizationAddress {
 
     @future (callout = true)
     public static void sendAddresses(List<String> accountIds ) {
@@ -26,5 +20,5 @@ public with sharing class SendGeolocalizationAddress {
         }
 
         repository.store(accounts);
-    }
+    }    
 }
