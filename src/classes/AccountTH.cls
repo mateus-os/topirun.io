@@ -9,6 +9,8 @@ public virtual class AccountTH extends TriggerHandler {
     AccountFilter filter;
     AccountValidator validator;
 
+    AccountAddressFilter filterAddress;
+
     public AccountTH() {
         this ((List<Account>) Trigger.new, (Map<Id,Account>) Trigger.oldMap);
     }
@@ -19,18 +21,18 @@ public virtual class AccountTH extends TriggerHandler {
 
         this.filter = new AccountFilter();
         this.validator = new AccountValidator();
+
+        this.filterAddress = new AccountAddressFilter();
     }
 
     override
     public void beforeInsert() {
-        validateDocumentsNumber();
-        validatePostalCode();
+        validations();
     }
 
     override
     public void beforeUpdate() {
-        validateDocumentsNumber();
-        validatePostalCode();
+        validations();
     }
 
     virtual
@@ -48,5 +50,21 @@ public virtual class AccountTH extends TriggerHandler {
 
         this.validator.validateBillingPostalCode(filteredAccounts);
         this.validator.validateShippingPostalCode(filteredAccounts);
+    }
+
+    virtual
+    public void sendToGeolocalizationSystem() {
+        List<Account> filteredAccounts = filterAddress.filterByChangedAddresses(newAccounts, oldAccounts);
+
+        if(filteredAccounts.isEmpty()) return;
+
+        SendGeolocalizationAddress.sendAddresses(this.filterAddress.convertSObjetList(filteredAccounts, 'Id'));
+    }
+
+    virtual
+    public void validations(){
+        validateDocumentsNumber();
+        validatePostalCode();
+        sendToGeolocalizationSystem();
     }
 }
