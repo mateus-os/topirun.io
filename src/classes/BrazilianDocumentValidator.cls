@@ -1,6 +1,7 @@
 /**
  * @author: ercarval - topi
  */
+@SuppressWarnings ('PMD')
 public class BrazilianDocumentValidator {
 
     /**

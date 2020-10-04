@@ -1,6 +1,7 @@
 /**
  * @author mateus-os
  */
+@SuppressWarnings ('PMD')
 public class SalesforceAuthToken {
 
     public String access_token;

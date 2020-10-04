@@ -2,6 +2,7 @@
  * @author kevinohara80
  * https://github.com/kevinohara80/sfdc-trigger-framework
  */
+@SuppressWarnings ('PMD')
 public virtual class TriggerHandler {
 
     // static map of handlername, times run() was invoked
