@@ -27,12 +27,22 @@ public virtual class AccountTH extends TriggerHandler {
 
     override
     public void beforeInsert() {
-        validations();
+        validateData();
     }
 
     override
     public void beforeUpdate() {
-        validations();
+        validateData();
+    }
+
+    override
+    public void afterInsert() {
+        sendToGeolocalizationSystem();
+    }
+
+    override
+    public void afterUpdate() {
+        sendToGeolocalizationSystem();
     }
 
     virtual
@@ -66,9 +76,8 @@ public virtual class AccountTH extends TriggerHandler {
     }
 
     virtual
-    public void validations(){
+    public void validateData(){
         validateDocumentsNumber();
         validatePostalCode();
-        sendToGeolocalizationSystem();
     }
 }

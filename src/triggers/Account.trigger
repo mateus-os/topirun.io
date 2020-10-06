@@ -1,6 +1,6 @@
 /**
  * @author mateus-os 
  */
-trigger Account on Account (before insert, before update) {
+trigger Account on Account (before insert, before update, after insert, after update) {
     new AccountTH().run();
 }
