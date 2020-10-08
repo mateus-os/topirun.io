@@ -7,8 +7,7 @@ public class AccountAddressFilter extends Filter {
         List<Account> filteredAccounts = new List<Account> ();
 
         for (Account account : newAccounts) {
-            if(String.isEmpty(account.BillingStreet) || String.isEmpty(account.BillingPostalCode)
-            || String.isEmpty(account.ShippingStreet) || String.isEmpty(account.ShippingPostalCode)) {
+            if(isRequiredAddressFieldsEmpty(account)) {
                 continue;
             }
 
@@ -17,15 +16,61 @@ public class AccountAddressFilter extends Filter {
                 continue;
             }
 
-            if (account.BillingStreet == oldAccounts.get(account.Id).BillingStreet
-            && account.BillingPostalCode == oldAccounts.get(account.Id).BillingPostalCode
-            && account.ShippingStreet == oldAccounts.get(account.Id).ShippingStreet
-            && account.ShippingPostalCode == oldAccounts.get(account.Id).ShippingPostalCode) {
+            if (!isAddressChanged(account, oldAccounts.get(account.Id))) {
                 continue;
             }
 
             filteredAccounts.add(account);
         }
         return filteredAccounts;
+    }
+
+    private Boolean isAddressChanged(Account newAccount, Account oldAccount){
+        if(newAccount.BillingCity != oldAccount.BillingCity
+        || newAccount.ShippingCity != oldAccount.ShippingCity) {
+            return true;
+        }
+        
+        if(newAccount.BillingCountry != oldAccount.BillingCountry
+        || newAccount.ShippingCountry != oldAccount.ShippingCountry) {
+            return true;
+        }
+
+        if(newAccount.BillingPostalCode != oldAccount.BillingPostalCode
+        || newAccount.ShippingPostalCode != oldAccount.ShippingPostalCode) {
+            return true;
+        }
+
+        if(newAccount.BillingState != oldAccount.BillingState
+        || newAccount.ShippingState != oldAccount.ShippingState) {
+            return true;
+        }
+
+        if(newAccount.BillingStreet != oldAccount.BillingStreet
+        || newAccount.ShippingStreet != oldAccount.ShippingStreet) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private Boolean isRequiredAddressFieldsEmpty(Account account){
+        if(String.isEmpty(account.BillingStreet)) {
+            return true;
+        }
+
+        if(String.isEmpty(account.BillingPostalCode)) {
+            return true;
+        }
+
+        if(String.isEmpty(account.ShippingStreet)) {
+            return true;
+        }
+
+        if(String.isEmpty(account.ShippingPostalCode)) {
+            return true;
+        }
+
+        return false;
     }
 }
