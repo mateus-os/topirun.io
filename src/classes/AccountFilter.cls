@@ -46,7 +46,7 @@ public class AccountFilter {
     }
 
     public List<Account> filterByChangedPostalCode(List<Account> newAccounts, Map<Id,Account> oldAccounts) {
-        List<Account> filteredAccounts = new List<Account> ();
+        List<Account> filteredAccounts = new List<Account>();
 
         for (Account account : newAccounts) {
 

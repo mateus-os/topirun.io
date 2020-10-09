@@ -5,12 +5,9 @@
 public with sharing class AccountFilterTest {
 
     @isTest
-    static void givenChangedCnpjWhenInsertReturnAccounts() {
-        Account account = AccountFixtureFactory.createAccount(new Account(Name='Projeto CNPJ'
-                                                , Cnpj__c = '61903124000171'));
-
+    static void givenCnpjWhenInsertedReturnAccounts() {
         List<Account> accounts = new List<Account>{
-            account
+            new Account(Name='Test CNPJ', Cnpj__c = '61903124000171')
         };
 
         AccountFilter filter = new AccountFilter();
@@ -21,8 +18,8 @@ public with sharing class AccountFilterTest {
     }
 
     @isTest
-    static void givenChangedCnpjWhenUpdateReturnAccounts() {
-        Account account = AccountFixtureFactory.createAccount(new Account(Name='Projeto CNPJ'
+    static void givenCnpjWhenChangedReturnAccounts() {
+        Account account = AccountFixtureFactory.createAccount(new Account(Name='Test CNPJ'
                                                 , Cnpj__c = '61903124000171'));
 
         List<Account> accounts = new List<Account>{
@@ -44,12 +41,9 @@ public with sharing class AccountFilterTest {
     }
 
     @isTest
-    static void givenChangedCpfWhenInsertReturnAccounts() {
-        Account account = AccountFixtureFactory.createAccount(new Account(Name='Projeto CPF'
-                                                , Cpf__c = '44533580084'));
-
+    static void givenCpfWhenInsertedReturnAccounts() {
         List<Account> accounts = new List<Account>{
-            account
+            new Account(Name='Test CPF', Cpf__c = '44533580084')
         };
 
         AccountFilter filter = new AccountFilter();
@@ -60,8 +54,8 @@ public with sharing class AccountFilterTest {
     }
 
     @isTest
-    static void givenChangedCpfWhenUpdateReturnAccounts() {
-        Account account = AccountFixtureFactory.createAccount(new Account(Name='Projeto CPF'
+    static void givenCpfWhenChangedReturnAccounts() {
+        Account account = AccountFixtureFactory.createAccount(new Account(Name='Test CPF'
                                                 , Cpf__c = '44533580084'));
 
         List<Account> accounts = new List<Account>{
@@ -80,5 +74,48 @@ public with sharing class AccountFilterTest {
 
         System.assertEquals(accounts.size(), filteredAccounts.size());
         System.assertNotEquals(filteredAccounts.get(0).Cpf__c, oldAccounts.get(changedAccount.Id).Cpf__c);
+    }
+
+    @isTest
+    static void givenPostalCodeWhenInsertedReturnAccounts() {
+        List<Account> accounts = new List<Account>{
+            new Account(Name='Test BillingPostalCode', BillingPostalCode = '06123450')
+            , new Account (Name='Test ShippingPostalCode', ShippingPostalCode = '06123456')
+        };
+
+        AccountFilter filter = new AccountFilter();
+
+        List<Account> filteredAccounts = filter.filterByChangedPostalCode(accounts, null);
+
+        System.assertEquals(accounts.size(), filteredAccounts.size());
+    }
+
+    @isTest
+    static void givenPostalCodeWhenChangedReturnAccounts() {
+        List<Account> accounts = AccountFixtureFactory.createAccount(
+            new List<Account>{
+                new Account(Name='Test BillingPostalCode', BillingPostalCode = '06123450')
+            , new Account (Name='Test ShippingPostalCode', ShippingPostalCode = '06123456')
+            }
+        );
+
+        Map<Id,Account> oldAccounts = new Map<Id,Account> (accounts);
+
+        Account changedBilling = accounts.get(0).clone(true, true, true, true);
+        Account changedShipping = accounts.get(1).clone(true, true, true, true);
+
+        changedBilling.BillingPostalCode = '16123450';
+        changedShipping.ShippingPostalCode = '16123456';
+
+        oldAccounts.put(changedBilling.Id, changedBilling);
+        oldAccounts.put(changedShipping.Id, changedShipping);
+
+        AccountFilter filter = new AccountFilter();
+
+        List<Account> filteredAccounts = filter.filterByChangedPostalCode(accounts, oldAccounts);
+
+        System.assertEquals(accounts.size(), filteredAccounts.size());
+        System.assertNotEquals(filteredAccounts.get(0).BillingPostalCode, oldAccounts.get(changedBilling.Id).BillingPostalCode);
+        System.assertNotEquals(filteredAccounts.get(1).ShippingPostalCode, oldAccounts.get(changedShipping.Id).ShippingPostalCode);
     }
 }

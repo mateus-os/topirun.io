@@ -33,7 +33,7 @@ public class AccountValidator {
 
     public List<Account> validateBillingPostalCode(List<Account> accounts) {
         for (Account account : accounts) {
-            if(account.BillingPostalCode.length() == 0){
+            if(account.BillingPostalCode == null || account.BillingPostalCode.length() == 0){
                 continue;
             }
 
@@ -49,7 +49,7 @@ public class AccountValidator {
 
     public List<Account> validateShippingPostalCode(List<Account> accounts) {
         for (Account account : accounts) {
-            if(account.ShippingPostalCode == null){
+            if(account.ShippingPostalCode == null || account.ShippingPostalCode.length() == 0){
                 continue;
             }
 

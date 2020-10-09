@@ -17,6 +17,11 @@ public class AccountFixtureFactory {
         return account;
     }
 
+    public static List<Account> createAccount (List<Account> accounts) {
+        insert accounts;
+        return accounts;
+    }
+
     public static Account fromJson (String payload) {
         return (Account) JSON.deserialize(payload, Account.class);
     }
