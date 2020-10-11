@@ -13,9 +13,15 @@ public class SalesforceAuthService {
             return null;
         }
 
-        SalesforceAuthToken token = (SalesforceAuthToken)
-        JSON.deserialize(response.getBody(), SalesforceAuthToken.class);
-        
+        SalesforceAuthToken token = new SalesforceAuthToken();
+
+        try {
+            token = (SalesforceAuthToken)
+            JSON.deserialize(response.getBody(), SalesforceAuthToken.class);
+        } catch (Exception ex) {
+            return token;
+        }
+
         return token;
     }
 
